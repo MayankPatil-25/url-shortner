@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ShortUrlTest.ViewModels"
+             x:Class="ShortUrlTest.MainPage"
+             BackgroundColor="#2f9683">
+    <!-- #43d9bd -->
+    <Grid RowDefinitions="Auto, *">
+        <VerticalStackLayout Grid.Row="0">
+            <!-- Title -->
+            <VerticalStackLayout
+                Padding="10">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="25"
+                    VerticalTextAlignment="Center"
+                    HorizontalTextAlignment="Center"
+                    Text="URL Shortner App"
+                    TextColor="White" />
+            </VerticalStackLayout>
+
+            <!-- Separator -->
+            <VerticalStackLayout HeightRequest="1" BackgroundColor="Gray" />
+
+            <!-- Editor -->
+            <VerticalStackLayout
+                Padding="10"
+                Spacing="5" BackgroundColor="WhiteSmoke">
+                <Grid
+                    ColumnDefinitions="*,Auto">
+                    <Editor
+                        Grid.Column="0"
+                        Placeholder="Enter URL here"
+                        Text="{Binding OriginalUrl}"
+                        MaximumHeightRequest="100" />
+                    <ImageButton
+                        Grid.Column="1"
+                        Style="{StaticResource ImageIconStyle}"
+                        Source="add_icon"
+                        Command="{Binding ShortenUrlCommand}" />
+                </Grid>
+            </VerticalStackLayout>
+
+            <!-- Separator -->
+            <VerticalStackLayout Style="{StaticResource SeparatorViewStyle}" />
+
+            <!-- SubTitle -->
+            <VerticalStackLayout
+                Padding="10">
+                <Label
+                    FontSize="18"
+                    VerticalTextAlignment="Center"
+                    HorizontalTextAlignment="Center"
+                    Text="Saved URLs"
+                    FontAttributes="Bold"
+                    TextColor="White" />
+            </VerticalStackLayout>
+
+            <!-- Separator -->
+            <VerticalStackLayout Style="{StaticResource SeparatorViewStyle}" />
+        </VerticalStackLayout>
+        <ScrollView
+            Grid.Row="1"
+            VerticalOptions="Fill"
+            HorizontalOptions="Fill"
+            BackgroundColor="WhiteSmoke"
+            Padding="10">
+            <CollectionView
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill"
+                ItemsSource="{Binding UrlItems}"
+                SelectionMode="Single"
+                SelectionChanged="SelectableItemsView_OnSelectionChanged">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                            <VerticalStackLayout 
+                                Padding="9">
+                                <Grid
+                                    BackgroundColor="WhiteSmoke"
+                                    RowDefinitions="3.3*,3.3*,3.3*"
+                                    ColumnDefinitions="2*,8*">
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Text="Original"
+                                        VerticalOptions="Start"
+                                        FontAttributes="Bold" />
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Text="Short"
+                                        VerticalOptions="Start"
+                                        FontAttributes="Bold" />
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Text="{Binding OriginalUrl}"
+                                        VerticalOptions="Start"
+                                        MaxLines="3"
+                                        LineBreakMode="TailTruncation" />
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Text="{Binding ShortenedUrl}"
+                                        VerticalOptions="Start" />
+                                    <HorizontalStackLayout
+                                        Grid.Row="2"
+                                        Grid.ColumnSpan="2"
+                                        HorizontalOptions="End"
+                                        Spacing="5">
+                                        <ImageButton
+                                            Style="{StaticResource ImageIconStyle}"
+                                            Source="copy_icon"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainViewModel}}, Path=CopyShortUrlCommand}"
+                                            CommandParameter="{Binding .}" />
+                                        <ImageButton
+                                            Style="{StaticResource ImageIconStyle}"
+                                            Source="delete_icon"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainViewModel}}, Path=DeleteUrlCommand}"
+                                            CommandParameter="{Binding .}" />
+                                    </HorizontalStackLayout>
+                                </Grid>
+                                <!-- Separator -->
+                                <VerticalStackLayout Margin="4" Style="{StaticResource SeparatorViewStyle}" />
+                            </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+    </Grid>
+</ContentPage>
